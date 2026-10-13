@@ -61,3 +61,14 @@ python -m http.server 8000
 
 - https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
 - https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site
+
+## 算法练习场
+
+打开 `practice.html`，或从首页的“算法练习”入口进入。首批 8 道原创表述的经典算法练习，支持 JavaScript 编码、样例运行、完整测试集提交、自定义 JSON 参数、题解、代码草稿和提交历史。
+
+- `problems.js`：题库，使用稳定 ID；每题定义函数名、参数、约束、样例、测试及参考解法。
+- `practice.js`：编辑器交互、本地判题与存储；`practice.css`：响应式布局。
+- 用户代码在带 CSP 的 sandbox iframe 内部 Web Worker 运行，不在页面主线程执行；不开放网络，执行超时会终止。
+- 保存键为 `agent-fieldnotes-coding-v1`。保留最近 40 次提交，本地数据不跨设备同步。
+- 前端测试集公开，适合个人学习，不能用作可信竞赛排名。仅支持 JavaScript；Python/Java 等需要另外接入语言运行时或服务端判题。
+- 单次 Worker 限时 2 秒，整个运行器响应上限 5 秒。没有操作系统级内存配额；不要运行来源不明的代码。运行耗时仅供本机参考，不代表复杂度证明。
