@@ -4,11 +4,19 @@
 
 ## 功能
 
-- 12 篇手册，覆盖原理、构建、评测、部署四个阶段；每篇提供概念、实现步骤、验收方法、误区与伪代码。
-- 分类与全文关键字段搜索、收藏、学习进度、上线检查清单。
-- Agent Loop 分步演示（固定模拟数据，不调用模型）。
-- 任务成功率计算器（本地计算）。
-- 响应式布局、原生对话框、键盘操作与减少动态效果支持。
+- **32 章、6 个模块**：运行时基础；工具、权限与上下文；LangGraph；任务协作；RAG 与完整应用；评测、安全与上线。
+- 每章包含原理、分步实现、具体场景、注释代码、交互实验、误区、验收项与来源链接。
+- **8 类确定性本地实验**：Agent Loop、上下文压缩、跨会话记忆、Reducer、审批与崩溃恢复、依赖 DAG、证据召回、评测门槛。
+- 章节搜索、模块筛选、收藏、学习进度、独立章节链接、代码复制与上线清单。
+- 保留算法练习场与 Hot 100 可视化详解，原页面和学习记录不受影响。
+- 无模型调用、无真实外部写入、无上传合同功能；实验是机制教学，不是框架运行或产品基准。
+
+## 参考与内容边界（2026-10-14）
+
+- [learn-claude-code](https://github.com/shareAI-lab/learn-claude-code/tree/ce8f9f186058939da54c9d6fead78dfb5d0fd6c3)：当前根目录 s01–s17，不混用旧 agents/docs 12课编号。
+- [langgraph-in-action](https://github.com/webup/langgraph-in-action/tree/9f02d60e115dd1c4d9b5231a0d415e9fe785e3cc)：chapter2–7，原依赖基线 Python>=3.13、LangGraph>=0.6.6、LangChain>=0.3.27。框架 API 迁移另链接官方文档。
+- 本站原创解释、场景、示意代码与交互实现；未整段复制第三方教程。每章标出具体参考。RAG、安全、评测与生产工程是原创扩展，不声称参考项目已实现全部能力。
+- 明确区分 mock MCP 与真实传输、worktree 与安全沙箱、内存存档与持久存储、节点重跑与外部幂等。
 
 ## GitHub Pages 部署
 
@@ -30,24 +38,24 @@ Fork 本仓库后，在你自己的仓库按以上步骤启用 Pages 即可。�
 python -m http.server 8000
 ```
 
-访问 `http://localhost:8000`。Windows 也可使用 `py -m http.server 8000`。停止服务按 Ctrl+C。无需 `npm install`；Node 仅用于可选语法检查：`node --check app.js`。
+访问 `http://localhost:8000`。Windows 也可使用 `py -m http.server 8000`。停止服务按 Ctrl+C。无需 `npm install`；Node 用于运行手册回归检查：`node test-handbook.cjs`（建议 Node 18+）。
 
 ## 目录与维护
 
 | 路径 | 用途 |
 | --- | --- |
-| `index.html` | 页面结构与文案 |
-| `style.css` | 视觉样式与移动端布局 |
-| `app.js` | 文章数据与交互逻辑 |
-| `.nojekyll` | 分支部署时跳过 Jekyll 处理 |
-| `CONTRIBUTING.md` | 内容与代码贡献说明 |
-| `LICENSE` | MIT 许可证 |
+| `index.html` | 自包含手册：样式、HANDBOOK 数据、纯实验引擎、阅读交互，均为可读源码 |
+| `test-handbook.cjs` | 从首页提取脚本，校验章节完整性与实验关键不变量 |
+| `style.css` / `app.js` | 旧版首页资源，当前手册已不加载；保留便于历史对照 |
+| `.nojekyll` | 静态 Pages 部署 |
+| `CONTRIBUTING.md` / `LICENSE` | 贡献说明 / MIT 许可证 |
 
-文章在 `app.js` 顶部的 `articles` 数组中维护。`group` 对应 0 原理、1 构建、2 评测、3 部署。当前文章 ID 使用数组下标，因此修改已有内容不会影响记录；重新排序会改变本地记录对应关系。添加或删除文章时也应更新页面篇数、分类计数、进度分母和“下一篇”边界；扩大规模前建议改为稳定 ID 与动态计数。
+在 `index.html` 的 `window.HANDBOOK` 中维护模块和章节。每章使用稳定 `id`，新增章节时同步维护章节编号与首页介绍统计；列表和学习进度按数据动态计算。`Engines` 中的模拟逻辑为纯函数，`mountLab` 负责交互展示，阅读器负责目录、深链接和本地进度。单文件首页无需构建，也避免部署缓存造成新旧数据与脚本不匹配。章节链接形如 `#chapter=interrupt`。
 
 ## 数据与边界
 
-- 收藏、已学状态与检查清单保存在浏览器 localStorage，键为 `agent-fieldnotes`；不上传服务器、不跨设备同步。清理站点数据会清空记录。从旧域名迁移到 GitHub Pages 后，不会自动迁移旧域名的进度。
+- 收藏、已学状态与检查清单保存在浏览器 localStorage，新手册键为 `agent-fieldnotes-handbook-v2`；不上传服务器、不跨设备同步。清理站点数据会清空记录。从旧域名迁移到 GitHub Pages 后，不会自动迁移旧域名的进度。
+- 首次打开新手册时，将旧 `agent-fieldnotes` 中12章的已学/收藏按对应主题迁移到稳定 ID；旧键保留，算法页面存储不变。旧版上线检查清单不自动勾选新版验收条件。
 - 无统计跟踪脚本、远程字体或 CDN 运行依赖。官方资料链接仅在点击后访问对应网站。
 - GitHub Pages 托管的是静态网站；没有在线编辑后台、用户系统或真实模型推理服务。修改内容通过提交代码完成。
 - 本包不含原托管平台配置、原站点标识、Git 历史、账号信息或凭证。它是可独立部署的源码副本。
