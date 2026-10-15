@@ -39,7 +39,7 @@ A bilingual, browser-only learning site for AI Agent engineering: 32 chapters, 8
 
 ## 中英文版本
 
-所有三个页面支持中文 / EN 切换，英文版本包含完整教学内容，不依赖在线翻译服务：
+所有三个主页面支持中文 / EN 切换，英文版本包含完整教学内容，不依赖在线翻译服务：
 
 | 中文 | English |
 | --- | --- |
@@ -49,7 +49,7 @@ A bilingual, browser-only learning site for AI Agent engineering: 32 chapters, 8
 
 语言选择保存在 `agent-fieldnotes-language`。切换时保留当前章节或题目 hash；已学、收藏、代码草稿与提交记录共用原有存储键和稳定 ID。显式 `?lang=zh` / `?lang=en` 覆盖已保存偏好；英文页面的站内导航继续使用英文入口。不会发送内容到翻译服务，也不需要登录。
 
-英文页面包含自己的翻译数据与交互脚本，练习和 Hot100 继续复用原有 CSS。修改教学内容时请同步两种语言；标识符、题目 ID、函数签名与判题数据保持一致。不要翻译用户自行输入的代码或数据。新增双语回归检查：`node test-i18n.cjs`。
+手册和练习场英文页面包含自己的翻译数据与交互脚本；Hot 100 改为中英文共用数据与渲染器，避免两个版本出现内容差异。修改教学内容时请同步两种语言；标识符、题目 ID、函数签名与判题数据保持一致。不要翻译用户自行输入的代码或数据。新增双语回归检查：`node test-i18n.cjs`。
 
 ## GitHub Pages 部署
 
@@ -115,23 +115,28 @@ python -m http.server 8000
 - 单次 Worker 限时 2 秒，整个运行器响应上限 5 秒。没有操作系统级内存配额；不要运行来源不明的代码。运行耗时仅供本机参考，不代表复杂度证明。
 
 
-## Hot 100 可视化题解
+## Hot 100：按方法学习 / Method-oriented guides
 
-访问 [`hot100.html`](./hot100.html)：按官方题单的17类组织完整100题，提供213种分层算法说明、复杂度分析和400个关键状态演示。支持搜索、收藏、学习标记、进度JSON导入/导出，以及 `#p题号` 深链接。全部功能在浏览器端运行，无需ChatGPT或账号登录。
+[中文题解](https://aidify2025.github.io/agent-fieldnotes/hot100.html?lang=zh) · [English guides](https://aidify2025.github.io/agent-fieldnotes/hot100-en.html?lang=en)
 
-题号、题名和链接用于识别力扣题目；题意、示例、方法和演示为原创教学内容，不转载完整题面。目录核对来源：https://leetcode.cn/studyplan/top-100-liked/ （2026-10-13）。本站与力扣没有官方关联。完整约束和代码提交请访问每题原题链接。
+覆盖 Hot 100 全部 100 题和 17 个类型。题意、关键约束与有效自编示例经过重新核对；本站独立编写讲解和代码，不复制官方题面或官方题解。原题链接和力扣题解入口保留；部分题解可能需要登录。
 
-- `hot100-data.js`：每题的题意、自编示例、陷阱、多解法与逐步状态。
-- `hot100.js`：目录、解法切换、演示播放器、学习记录。
-- `hot100.css`：响应式独立样式，未使用外部字体或CDN。
-- `hot100.html`：独立入口，可直接部署到GitHub Pages。
+每题先列出可选方法与复杂度，再按方法展开：
 
-演示是选定解法的固定输入关键步骤，不是任意代码执行器；完整解法以语言无关步骤讲解。方法层级表示理解门槛，不代表所有高阶方法都更快。复杂度会标明输出空间、期望与最坏情况等口径。进度保存在当前浏览器，可导出到JSON并在另一浏览器导入合并。
+- 思路推导与算法步骤；不再套用旧的六段阅读路线，也不强制划分初中高阶。
+- 每种方法独立的示例状态推演，切换方法后同步切换；可前进、后退、重置或自动播放。
+- Java 17 / Python 3 完整解法，可切换和复制；链表/树节点定义由原题评测器提供。
+- 正确性解释，以及与实际代码一致的时间和空间复杂度推导。基线解法和进阶要求的限制在说明中标注。
 
+`hot100-data.js` 为中英文共用数据源，`hot100.js` 为共用渲染器，`hot100.css` 为共用响应式样式。新增字段 `statement`、`constraints`、`example` 与方法内的 `intuition / steps / correctness / complexity / trace` 使用 `{zh, en}`；代码只维护一份。编辑任一方法时，须同步解释、代码、复杂度和演示状态。
 
-### 详细教学版
+代码块用于学习与前往力扣提交，本页不直接执行 Java/Python。动画是自编示例的关键状态，不是任意输入的运行器。原算法练习场继续提供浏览器内 JavaScript 练习。
 
-100题均新增：思路来源、变量/状态含义、逐步手算、解法间的优化关系、正确性说明、复杂度推导，以及可展开参考解释的理解自测。新增讲解约4.6万中文字符（含公式与符号），每题有6段阅读导航；原有解法标签、400步演示及学习记录继续可用。内容保存在 `hot100-data.js` 的 `teaching` 字段，渲染由 `hot100.js` 负责。
+收藏、已学状态和导入导出保持 `agent-fieldnotes-hot100-v1` 与稳定题号；无需迁移历史记录。运行 `node test-hot100.cjs` 验证完整性与双语方法/代码切换，再运行 `node test-i18n.cjs` 和 `node test-seo.cjs`。
+
+All 100 lessons share bilingual data and a method-oriented renderer. Each approach includes original reasoning, Java/Python implementations, correctness, complexity and its own example trace. The page is a learning guide, not a Java/Python execution environment. Saved progress remains compatible with previous versions.
+
+验证范围与已知边界见 [HOT100-VALIDATION.md](HOT100-VALIDATION.md)。
 
 ## SEO 与独立教程页
 
