@@ -1,6 +1,25 @@
 # Agent Fieldnotes · AI Agent 开发手册
 
-从理解原理到构建、评测、部署的中文技术知识站。纯 HTML / CSS / JavaScript，无构建依赖、无后端、无登录、无 API Key。发布至公开 GitHub Pages 后，访客无需 GitHub 或 ChatGPT 账号即可阅读。
+从理解原理到构建、评测、部署的中英双语技术知识站。纯 HTML / CSS / JavaScript，无构建依赖、无后端、无登录、无 API Key。发布至公开 GitHub Pages 后，访客无需 GitHub 或 ChatGPT 账号即可阅读。
+
+[中文网站](https://aidify2025.github.io/agent-fieldnotes/index.html?lang=zh) · [English website](https://aidify2025.github.io/agent-fieldnotes/index-en.html?lang=en) · [贡献指南 / Contributing](CONTRIBUTING.md)
+
+A bilingual, browser-only learning site for AI Agent engineering: 32 chapters, 8 interactive labs, 100 algorithm walkthroughs and a JavaScript coding playground. No account, API key or build dependencies required.
+
+![Agent Fieldnotes 英文首页真实截图，右上角支持中英文切换](site-preview.jpg)
+
+## 从哪里开始 / Learning paths
+
+| 你的目标 / Goal | 推荐路径 / Path |
+| --- | --- |
+| 理解 Agent 执行机制 / Agent fundamentals | [Agent Loop](https://aidify2025.github.io/agent-fieldnotes/agent-loop.html) → 工具契约 → 权限与预算 |
+| 接入工具 / Connect tools | [MCP 教程](https://aidify2025.github.io/agent-fieldnotes/mcp-tutorial.html) → 错误语义 → 权限校验 |
+| 构建可恢复流程 / Recoverable workflows | [LangGraph](https://aidify2025.github.io/agent-fieldnotes/langgraph-tutorial.html) → [HITL 与 Checkpoint](https://aidify2025.github.io/agent-fieldnotes/hitl-checkpoint.html) → 幂等与故障注入 |
+| 做完整应用 / Build an application | 手册第 23–26 章：RAG → 检索 → 证据约束 → 合同审查助手 |
+| 验证上线质量 / Production readiness | 手册第 27–32 章：评测 → 重试 → Trace → 成本 → 安全 → 部署 |
+| 练算法 / Algorithm practice | [Hot 100 详解](https://aidify2025.github.io/agent-fieldnotes/hot100.html?lang=zh) → [编程练习](https://aidify2025.github.io/agent-fieldnotes/practice.html?lang=zh) |
+
+每个专题页提供中文 / EN 切换。先阅读例子，再打开对应的交互章节做实验，最后检查验收项。
 
 ## 功能
 
@@ -64,7 +83,7 @@ python -m http.server 8000
 | `.nojekyll` | 静态 Pages 部署 |
 | `CONTRIBUTING.md` / `LICENSE` | 贡献说明 / MIT 许可证 |
 
-在 `index.html` 的 `window.HANDBOOK` 中维护模块和章节。每章使用稳定 `id`，新增章节时同步维护章节编号与首页介绍统计；列表和学习进度按数据动态计算。`Engines` 中的模拟逻辑为纯函数，`mountLab` 负责交互展示，阅读器负责目录、深链接和本地进度。单文件首页无需构建，也避免部署缓存造成新旧数据与脚本不匹配。章节链接形如 `#chapter=interrupt`。
+在 `index.html` 的 `window.HANDBOOK` 中维护模块和章节。每章使用稳定 `id`，新增章节时同步维护章节编号与首页介绍统计；列表和学习进度按数据动态计算。`Engines` 中的模拟逻辑为纯函数，`mountLab` 负责交互展示，阅读器负责目录、深链接和本地进度。交互章节链接形如 `#chapter=interrupt`。重点专题另有静态正文页，由 `build-seo.cjs` 从中英文首页数据生成；不要手工修改生成页。内容更新后运行 `node build-seo.cjs`，同步提交生成结果。
 
 ## 数据与边界
 
@@ -113,3 +132,12 @@ python -m http.server 8000
 ### 详细教学版
 
 100题均新增：思路来源、变量/状态含义、逐步手算、解法间的优化关系、正确性说明、复杂度推导，以及可展开参考解释的理解自测。新增讲解约4.6万中文字符（含公式与符号），每题有6段阅读导航；原有解法标签、400步演示及学习记录继续可用。内容保存在 `hot100-data.js` 的 `teaching` 字段，渲染由 `hot100.js` 负责。
+
+## SEO 与独立教程页
+
+- `agent-loop.html`、`mcp-tutorial.html`、`hitl-checkpoint.html`、`langgraph-tutorial.html` 及对应 `-en.html`：共 8 个静态正文页，覆盖 7 个重点章节。关闭 JavaScript 仍可阅读；实验入口通往原手册。
+- 六个原页面和八个教程页均声明 canonical、双向 hreflang 与 Open Graph 分享信息。
+- `sitemap.xml` 列出 14 个公开页面，不包含 hash 或语言查询参数。没有伪造更新时间、评分或索引状态。
+- 修改正文后运行 `node build-seo.cjs`；Fork 后使用 `node build-seo.cjs https://你的用户名.github.io/仓库名/` 重新生成站点 URL。
+- 运行 `node test-seo.cjs`、`node test-handbook.cjs`、`node test-i18n.cjs` 验证。
+- 搜索引擎所有权验证与站点地图提交步骤见 [SEARCH-SETUP.md](SEARCH-SETUP.md)。发布 sitemap 不等于已提交或已收录。

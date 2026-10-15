@@ -1,20 +1,28 @@
-# 贡献指南
+# 贡献指南 / Contributing
 
-欢迎通过 Issue 反馈错误，或通过 Pull Request 补充文章与改进交互。
+欢迎报告事实错误、修复交互问题或补充教学内容。请通过 Issue 说明问题，或 Fork 后提交 Pull Request。
 
-## 内容约定
+## 内容与双语维护
 
-每个技术点应包含：适用问题、概念边界、实现步骤、评测/验收方法、常见误区。示例伪代码应明确标注；框架 API 或版本相关内容应附官方来源。不要提交密钥、真实业务数据或未经授权的第三方全文。
+- 每个技术点包含概念边界、实现步骤、具体例子、代码解释、常见误区、验收项与来源。
+- 同步维护 `index.html` 与 `index-en.html` 中的 `window.HANDBOOK`。章节以稳定 ID 保存记录，不要随意更改已有 ID。
+- 算法数据的中文源在 `hot100-data.js` / `problems.js`；英文数据内嵌于对应 `-en.html`。题目 ID、函数签名、测试参数与预期结果必须保持一致。
+- 当前练习交互脚本内嵌在 `practice.html` 与 `practice-en.html`；仅修改旧的 `practice.js` 不会更新线上页面。
+- 代码片段、伪代码、模拟实验需要明确标注；框架 API 和版本相关结论附官方来源。不要提交密钥、真实合同或无权转载的全文。
 
-## 修改流程
+## 开发与检查
 
-1. Fork 仓库并创建分支。
-2. 修改 仓库根目录下的源文件，保持资源路径为相对路径。
-3. 本地运行 `python -m http.server 8000`。
-4. 检查桌面与手机布局、搜索、文章对话框、收藏与进度、评测计算器。
-5. 如果修改 JavaScript，运行 `node --check app.js`。
-6. 提交 PR，说明改动原因、修改内容和验证结果。
+1. Fork，创建分支，修改源文件。资源路径使用相对路径。
+2. 内容变更后运行 `node build-seo.cjs`，同步静态专题与元数据。Fork 部署请传入你自己的 HTTPS 站点根地址。
+3. 执行 `node test-handbook.cjs`、`node test-i18n.cjs`、`node test-seo.cjs`（Node 18+）。
+4. 用 `python -m http.server 8000` 启动本地站点。检查桌面和手机布局、中英文切换、当前章节/题目保持、收藏和进度，以及受影响的交互实验。
+5. 新增教程页应有完整静态正文、唯一 title / description、自指 canonical、双向 hreflang、可点击的站内入口，并纳入 sitemap。元数据应描述真实内容。
+6. PR 说明改动目的、涉及页面、验证结果和截图。不要以无关重构掩盖内容改动。
 
-文章目前按数组下标存储本地记录，避免随意重排既有文章。添加文章时同步维护计数和边界；未来可通过稳定文章 ID 消除此限制。
+无需模型 API Key 或后端。程序练习仅支持浏览器内 JavaScript；不要承诺服务端判题能力。
+
+## English contribution notes
+
+Keep Chinese and English content in sync. Preserve stable chapter/problem IDs and shared local-storage keys. Update the embedded scripts actually used by each page, regenerate standalone tutorials with `node build-seo.cjs`, and run all three checks above. Include the reason for your change, test results and screenshots in the PR. Mark pseudocode and simulations clearly, cite primary sources, and contribute only material you may license under MIT.
 
 贡献者应确保有权按项目 MIT 许可证提交所贡献的内容。
