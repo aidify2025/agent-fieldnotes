@@ -18,6 +18,20 @@
 - 本站原创解释、场景、示意代码与交互实现；未整段复制第三方教程。每章标出具体参考。RAG、安全、评测与生产工程是原创扩展，不声称参考项目已实现全部能力。
 - 明确区分 mock MCP 与真实传输、worktree 与安全沙箱、内存存档与持久存储、节点重跑与外部幂等。
 
+## 中英文版本
+
+所有三个页面支持中文 / EN 切换，英文版本包含完整教学内容，不依赖在线翻译服务：
+
+| 中文 | English |
+| --- | --- |
+| `index.html` | `index-en.html` — 32-chapter Agent Handbook |
+| `practice.html` | `practice-en.html` — 8 coding exercises |
+| `hot100.html` | `hot100-en.html` — all 100 detailed lessons |
+
+语言选择保存在 `agent-fieldnotes-language`。切换时保留当前章节或题目 hash；已学、收藏、代码草稿与提交记录共用原有存储键和稳定 ID。显式 `?lang=zh` / `?lang=en` 覆盖已保存偏好；英文页面的站内导航继续使用英文入口。不会发送内容到翻译服务，也不需要登录。
+
+英文页面包含自己的翻译数据与交互脚本，练习和 Hot100 继续复用原有 CSS。修改教学内容时请同步两种语言；标识符、题目 ID、函数签名与判题数据保持一致。不要翻译用户自行输入的代码或数据。新增双语回归检查：`node test-i18n.cjs`。
+
 ## GitHub Pages 部署
 
 本仓库使用 GitHub Pages 原生分支部署，不需要自定义工作流。

@@ -1,0 +1,921 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Agent Fieldnotes Coding Practice: JavaScript editing, sample runs, local tests, and solution explanations."><title>Coding Practice · Agent Fieldnotes</title><link rel="stylesheet" href="./practice.css"><script id="language-preference">(function(){var selected=new URLSearchParams(location.search).get('lang');var en=true;try{if(selected==='zh'||selected==='en')localStorage.setItem('agent-fieldnotes-language',selected);else if(en)localStorage.setItem('agent-fieldnotes-language','en');if(!en&&selected!=='zh'&&localStorage.getItem('agent-fieldnotes-language')==='en')location.replace('./practice-en.html?lang=en'+location.hash);}catch(e){}})();</script><style>
+/* Bilingual navigation; progress and drafts use the same stable IDs. */
+.language-switch{display:inline-flex;gap:2px;align-items:center;border:1px solid #cbd6c5;border-radius:7px;padding:3px;flex-shrink:0;background:#fffefa;font:12px/1.4 system-ui,sans-serif;white-space:nowrap}.language-switch a{padding:5px 8px;border-radius:4px;color:#385340;text-decoration:none}.language-switch a[aria-current="true"]{background:#264e3d;color:white}.language-switch a:focus-visible{outline:2px solid #d9633d;outline-offset:2px}.topbar .top-links{margin-left:auto}html[lang="en"] .sidebar .nav{font-size:12px}html[lang="en"] .hero h1{letter-spacing:-1.2px}html[lang="en"] .reader-title{font-size:34px}html[lang="en"] .flow-node{overflow-wrap:anywhere}html[lang="en"] .reader-toc{font-size:11px}html[lang="en"] .card-label{letter-spacing:0}html[lang="en"] .hero-board b{font-size:14px}html[lang="en"] .lab-controls label{flex-wrap:wrap}html[lang="en"] .budget-label{flex-wrap:wrap}html[lang="en"] .lesson-actions{flex-wrap:wrap}html[lang="en"] .method-tabs button{overflow-wrap:anywhere}
+@media(max-width:700px){header .offline,header .local-note{display:none}header{gap:10px;flex-wrap:wrap;height:auto;min-height:64px;padding:12px 16px}header nav:not(.language-switch){order:3;width:100%;justify-content:flex-start;flex-wrap:wrap;gap:12px}header .language-switch{margin-left:auto}.topbar{gap:10px;flex-wrap:wrap;height:auto;min-height:64px;padding:12px 16px}.topbar .top-links{order:3;width:100%;gap:12px;font-size:11px}.topbar .language-switch{margin-left:auto}html[lang="en"] .hero h1{font-size:34px}html[lang="en"] .reader-title{font-size:27px}html[lang="en"] .stats-strip span{font-size:9px}html[lang="en"] .flow{grid-template-columns:repeat(2,minmax(0,1fr))}html[lang="en"] .reader-top{flex-wrap:wrap}}
+</style><link rel="alternate" hreflang="zh-CN" href="./practice.html?lang=zh"><link rel="alternate" hreflang="en" href="./practice-en.html?lang=en"></head><body><header><a class="brand" href="./index-en.html"><b>A</b> Agent Fieldnotes</a><nav><a href="./index-en.html">Agent Handbook</a><span>Coding Practice</span><a href="./hot100-en.html">Hot 100 Guide</a></nav><span class="offline">● No sign-in · Local practice</span><nav class="language-switch" aria-label="Language / 语言"><a href="./practice.html?lang=zh" data-language="zh" lang="zh-CN" aria-current="false">中文</a><a href="./practice-en.html?lang=en" data-language="en" lang="en" aria-current="true">EN</a></nav></header><main><section class="intro"><div><span class="eyebrow">CODE. RUN. UNDERSTAND.</span><h1>Turn your ideas into working code.</h1><p>Build your algorithm skills: read a problem, write a solution, and test it until you understand it.</p></div><div class="stats"><strong id="solved">0 / 8</strong><span>Problems solved</span><div class="bar"><i id="bar"></i></div></div></section><div class="workspace"><aside class="problem-list"><div class="list-head"><h2>Problems <small>01 — 08</small></h2><input type="search" id="query" placeholder="Search titles or algorithm tags" aria-label="Search coding problems"><div class="filters"><select id="difficulty" aria-label="Difficulty"><option value="">All levels</option><option>Easy</option><option>Medium</option></select><select id="status" aria-label="Completion status"><option value="">All statuses</option><option value="todo">Not passed</option><option value="done">Passed</option></select></div></div><div id="problems"></div><a class="back" href="./index-en.html">← Back to the handbook</a></aside><section class="question"><div class="question-tabs"><button data-tab="description" class="active">Description</button><button data-tab="hint">Hints & solution</button><button data-tab="history">Submissions</button></div><div id="question-content"></div></section><section class="coding"><div class="editor-head"><span><i></i> JavaScript · ES2020+</span><button id="reset">Reset code</button></div><div class="editor-wrap"><pre id="lines" aria-hidden="true">1</pre><textarea id="editor" aria-label="JavaScript code editor" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off"></textarea></div><div class="editor-status"><span id="save-status">Code is saved automatically in this browser</span><span>Tab to indent · Ctrl/⌘ + Enter to run</span></div><div class="runbar"><span id="signature"></span><div><button id="run" class="btn">▷ Run samples</button><button id="submit" class="btn primary">Submit ↗</button></div></div><section class="console"><div class="console-tabs"><b>Test console</b><button id="custom-toggle" aria-expanded="false">Custom test ＋</button><button id="stop" hidden>Stop execution</button></div><div id="custom-box" hidden><label for="custom">JSON argument array (e.g. [[1,2,3],4])</label><textarea id="custom" aria-label="Custom arguments JSON"></textarea><button class="btn" id="custom-run">Run custom test</button><small>Custom tests only show output and do not affect solved status.</small></div><div id="result" role="status" aria-live="polite"><div class="idle">⌘<h3>Start writing your solution</h3><p>Run samples to inspect results; submit to check the full test suite.</p></div></div></section></section></div><footer><span>Standalone coding practice · Original descriptions and examples</span><span>Tests run locally and are public. No competition-grade anti-cheating or language compilation service.</span></footer></main><dialog id="reset-dialog"><h3>Reset code for this problem?</h3><p>Your current code will return to the starter template. Submission history is kept.</p><button class="btn" id="cancel-reset">Cancel</button><button class="btn primary" id="confirm-reset">Confirm reset</button></dialog><script>window.PRACTICE_PROBLEMS = [
+  {
+    "id": "pair-target",
+    "title": "Find a Target Pair",
+    "level": "Easy",
+    "tags": [
+      "Array",
+      "Hash Table"
+    ],
+    "fn": "findPair",
+    "params": "nums, target",
+    "description": "Given an integer array nums and a target value, find two different positions whose values sum to target. Return the two indices in ascending order. Each test has at most one solution; return [] if none exists.",
+    "constraints": [
+      "0 ≤ nums.length ≤ 500",
+      "All values and target are integers with absolute value at most 10⁶",
+      "Do not reuse a position; return indices, not values"
+    ],
+    "tests": [
+      {
+        "args": [
+          [
+            4,
+            1,
+            9,
+            6
+          ],
+          10
+        ],
+        "expected": [
+          1,
+          2
+        ]
+      },
+      {
+        "args": [
+          [
+            3,
+            3
+          ],
+          6
+        ],
+        "expected": [
+          0,
+          1
+        ]
+      },
+      {
+        "args": [
+          [],
+          4
+        ],
+        "expected": []
+      },
+      {
+        "args": [
+          [
+            1
+          ],
+          2
+        ],
+        "expected": []
+      },
+      {
+        "args": [
+          [
+            -4,
+            6,
+            3
+          ],
+          2
+        ],
+        "expected": [
+          0,
+          1
+        ]
+      },
+      {
+        "args": [
+          [
+            0,
+            5
+          ],
+          5
+        ],
+        "expected": [
+          0,
+          1
+        ]
+      },
+      {
+        "args": [
+          [
+            2,
+            4,
+            8
+          ],
+          3
+        ],
+        "expected": []
+      },
+      {
+        "args": [
+          [
+            2,
+            7,
+            4
+          ],
+          6
+        ],
+        "expected": [
+          0,
+          2
+        ]
+      }
+    ],
+    "hint": "Scan from left to right. Store previously seen values and their indices in a Map. For the current value x, look up target - x before inserting x.",
+    "complexity": "Expected time O(n), space O(n).",
+    "solution": "function findPair(nums, target) {\n  const seen = new Map();\n  for (let i = 0; i < nums.length; i++) {\n    const other = target - nums[i];\n    if (seen.has(other)) return [seen.get(other), i];\n    seen.set(nums[i], i);\n  }\n  return [];\n}"
+  },
+  {
+    "id": "bracket-check",
+    "title": "Check Balanced Brackets",
+    "level": "Easy",
+    "tags": [
+      "Stack",
+      "String"
+    ],
+    "fn": "isBalanced",
+    "params": "text",
+    "description": "Given a string text containing only ()[]{}, determine whether every closing bracket matches the most recent unmatched opening bracket. Return true if all brackets are matched, otherwise false. The empty string is valid.",
+    "constraints": [
+      "0 ≤ text.length ≤ 1000",
+      "Only the six bracket characters are allowed",
+      "Return a boolean, not a string"
+    ],
+    "tests": [
+      {
+        "args": [
+          "{[()]}[]"
+        ],
+        "expected": true
+      },
+      {
+        "args": [
+          "([)]"
+        ],
+        "expected": false
+      },
+      {
+        "args": [
+          ""
+        ],
+        "expected": true
+      },
+      {
+        "args": [
+          "("
+        ],
+        "expected": false
+      },
+      {
+        "args": [
+          "}"
+        ],
+        "expected": false
+      },
+      {
+        "args": [
+          "(){}[]"
+        ],
+        "expected": true
+      },
+      {
+        "args": [
+          "((()))"
+        ],
+        "expected": true
+      },
+      {
+        "args": [
+          "[(])"
+        ],
+        "expected": false
+      },
+      {
+        "args": [
+          "{{}"
+        ],
+        "expected": false
+      }
+    ],
+    "hint": "Push opening brackets onto a stack. For a closing bracket, pop and check the match. The stack must be empty after the scan.",
+    "complexity": "Time O(n), space O(n).",
+    "solution": "function isBalanced(text) {\n  const stack = [];\n  const pairs = { \")\": \"(\", \"]\": \"[\", \"}\": \"{\" };\n  for (const c of text) {\n    if (\"([{ \".trim().includes(c)) stack.push(c);\n    else if (stack.pop() !== pairs[c]) return false;\n  }\n  return stack.length === 0;\n}"
+  },
+  {
+    "id": "binary-index",
+    "title": "Search a Sorted Array",
+    "level": "Easy",
+    "tags": [
+      "Binary Search",
+      "Array"
+    ],
+    "fn": "searchIndex",
+    "params": "nums, target",
+    "description": "Find target in a strictly increasing integer array nums. Return its index if present, otherwise -1. Try halving the search range at each step instead of scanning every value.",
+    "constraints": [
+      "0 ≤ nums.length ≤ 10000",
+      "Values in nums are distinct and sorted in ascending order",
+      "Target time complexity: O(log n)"
+    ],
+    "tests": [
+      {
+        "args": [
+          [
+            2,
+            5,
+            8,
+            13,
+            21
+          ],
+          13
+        ],
+        "expected": 3
+      },
+      {
+        "args": [
+          [
+            2,
+            5,
+            8
+          ],
+          7
+        ],
+        "expected": -1
+      },
+      {
+        "args": [
+          [],
+          2
+        ],
+        "expected": -1
+      },
+      {
+        "args": [
+          [
+            7
+          ],
+          7
+        ],
+        "expected": 0
+      },
+      {
+        "args": [
+          [
+            7
+          ],
+          4
+        ],
+        "expected": -1
+      },
+      {
+        "args": [
+          [
+            -5,
+            -1,
+            0,
+            4
+          ],
+          -5
+        ],
+        "expected": 0
+      },
+      {
+        "args": [
+          [
+            1,
+            3,
+            5,
+            9
+          ],
+          9
+        ],
+        "expected": 3
+      },
+      {
+        "args": [
+          [
+            1,
+            2
+          ],
+          2
+        ],
+        "expected": 1
+      },
+      {
+        "args": [
+          [
+            1,
+            2
+          ],
+          0
+        ],
+        "expected": -1
+      }
+    ],
+    "hint": "Maintain a closed interval [left, right]. Compare its midpoint and move one boundary. The search fails when left > right.",
+    "complexity": "Time O(log n), space O(1). Local tests verify results; they do not prove complexity.",
+    "solution": "function searchIndex(nums, target) {\n  let left = 0, right = nums.length - 1;\n  while (left <= right) {\n    const mid = left + Math.floor((right - left) / 2);\n    if (nums[mid] === target) return mid;\n    if (nums[mid] < target) left = mid + 1;\n    else right = mid - 1;\n  }\n  return -1;\n}"
+  },
+  {
+    "id": "merge-streams",
+    "title": "Merge Two Sorted Arrays",
+    "level": "Easy",
+    "tags": [
+      "Two Pointers",
+      "Array"
+    ],
+    "fn": "mergeSorted",
+    "params": "a, b",
+    "description": "Merge two nondecreasing integer arrays a and b into a new nondecreasing array. Keep all duplicates. Use two pointers and return the new array.",
+    "constraints": [
+      "0 ≤ a.length, b.length ≤ 500",
+      "Inputs may be empty and may contain duplicates",
+      "Target time complexity: O(a.length + b.length)"
+    ],
+    "tests": [
+      {
+        "args": [
+          [
+            1,
+            4,
+            8
+          ],
+          [
+            2,
+            4,
+            7
+          ]
+        ],
+        "expected": [
+          1,
+          2,
+          4,
+          4,
+          7,
+          8
+        ]
+      },
+      {
+        "args": [
+          [],
+          [
+            3,
+            5
+          ]
+        ],
+        "expected": [
+          3,
+          5
+        ]
+      },
+      {
+        "args": [
+          [],
+          []
+        ],
+        "expected": []
+      },
+      {
+        "args": [
+          [
+            2
+          ],
+          []
+        ],
+        "expected": [
+          2
+        ]
+      },
+      {
+        "args": [
+          [
+            -5,
+            0
+          ],
+          [
+            -3,
+            2
+          ]
+        ],
+        "expected": [
+          -5,
+          -3,
+          0,
+          2
+        ]
+      },
+      {
+        "args": [
+          [
+            1,
+            1
+          ],
+          [
+            1
+          ]
+        ],
+        "expected": [
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "args": [
+          [
+            5,
+            9
+          ],
+          [
+            1,
+            2
+          ]
+        ],
+        "expected": [
+          1,
+          2,
+          5,
+          9
+        ]
+      }
+    ],
+    "hint": "Compare the values at both pointers. Append the smaller one and advance its pointer. Finally append the remaining values.",
+    "complexity": "Time O(m+n); the result array uses O(m+n) space.",
+    "solution": "function mergeSorted(a, b) {\n  const result = [];\n  let i = 0, j = 0;\n  while (i < a.length && j < b.length) {\n    result.push(a[i] <= b[j] ? a[i++] : b[j++]);\n  }\n  return result.concat(a.slice(i), b.slice(j));\n}"
+  },
+  {
+    "id": "unique-window",
+    "title": "Longest Substring Without Repeats",
+    "level": "Medium",
+    "tags": [
+      "Sliding Window",
+      "String"
+    ],
+    "fn": "longestUnique",
+    "params": "text",
+    "description": "Given a string text, return the length of its longest contiguous substring without repeated characters. The substring must be contiguous; you cannot skip characters. Return 0 for an empty string.",
+    "constraints": [
+      "0 ≤ text.length ≤ 2000",
+      "Input contains only ASCII characters, including possible spaces",
+      "Return the length, not the substring itself"
+    ],
+    "tests": [
+      {
+        "args": [
+          "abcaef"
+        ],
+        "expected": 5
+      },
+      {
+        "args": [
+          "zzzz"
+        ],
+        "expected": 1
+      },
+      {
+        "args": [
+          ""
+        ],
+        "expected": 0
+      },
+      {
+        "args": [
+          "abba"
+        ],
+        "expected": 2
+      },
+      {
+        "args": [
+          "a b a"
+        ],
+        "expected": 3
+      },
+      {
+        "args": [
+          "abcdef"
+        ],
+        "expected": 6
+      },
+      {
+        "args": [
+          "dvdf"
+        ],
+        "expected": 3
+      },
+      {
+        "args": [
+          "tmmzuxt"
+        ],
+        "expected": 5
+      }
+    ],
+    "hint": "The left boundary only moves right. Record each character's last index. On a repeat, set left = max(left, lastIndex + 1).",
+    "complexity": "Time O(n), space O(k), where k is the size of the character set.",
+    "solution": "function longestUnique(text) {\n  const last = new Map();\n  let left = 0, best = 0;\n  for (let right = 0; right < text.length; right++) {\n    const c = text[right];\n    if (last.has(c)) left = Math.max(left, last.get(c) + 1);\n    last.set(c, right);\n    best = Math.max(best, right - left + 1);\n  }\n  return best;\n}"
+  },
+  {
+    "id": "best-segment",
+    "title": "Maximum Subarray Sum",
+    "level": "Medium",
+    "tags": [
+      "Dynamic Programming",
+      "Array"
+    ],
+    "fn": "maxSegmentSum",
+    "params": "nums",
+    "description": "Choose a nonempty contiguous subarray of a nonempty integer array nums that has the largest sum, and return that sum. You must choose at least one value even when all values are negative.",
+    "constraints": [
+      "1 ≤ nums.length ≤ 1000",
+      "-10000 ≤ nums[i] ≤ 10000",
+      "The selected subarray must be contiguous and nonempty"
+    ],
+    "tests": [
+      {
+        "args": [
+          [
+            -3,
+            4,
+            -1,
+            2,
+            -6,
+            3
+          ]
+        ],
+        "expected": 5
+      },
+      {
+        "args": [
+          [
+            -7,
+            -2,
+            -5
+          ]
+        ],
+        "expected": -2
+      },
+      {
+        "args": [
+          [
+            6
+          ]
+        ],
+        "expected": 6
+      },
+      {
+        "args": [
+          [
+            1,
+            2,
+            3
+          ]
+        ],
+        "expected": 6
+      },
+      {
+        "args": [
+          [
+            0,
+            0
+          ]
+        ],
+        "expected": 0
+      },
+      {
+        "args": [
+          [
+            -1
+          ]
+        ],
+        "expected": -1
+      },
+      {
+        "args": [
+          [
+            5,
+            -2,
+            4,
+            -1
+          ]
+        ],
+        "expected": 7
+      }
+    ],
+    "hint": "Track the best sum ending at the current position. Either extend the previous subarray or start again at the current value. Update the global best separately.",
+    "complexity": "Time O(n), auxiliary space O(1).",
+    "solution": "function maxSegmentSum(nums) {\n  let current = nums[0], best = nums[0];\n  for (let i = 1; i < nums.length; i++) {\n    current = Math.max(nums[i], current + nums[i]);\n    best = Math.max(best, current);\n  }\n  return best;\n}"
+  },
+  {
+    "id": "stairs-count",
+    "title": "Count Staircase Routes",
+    "level": "Easy",
+    "tags": [
+      "Dynamic Programming"
+    ],
+    "fn": "countWays",
+    "params": "n",
+    "description": "Move from step 0 to step n, taking either 1 or 2 steps each time. Different sequences of step sizes count as different routes. Return the number of routes. For n = 0, there is one route: staying where you are.",
+    "constraints": [
+      "0 ≤ n ≤ 40",
+      "n is an integer",
+      "Return an exact integer within the JavaScript safe-integer range"
+    ],
+    "tests": [
+      {
+        "args": [
+          4
+        ],
+        "expected": 5
+      },
+      {
+        "args": [
+          0
+        ],
+        "expected": 1
+      },
+      {
+        "args": [
+          1
+        ],
+        "expected": 1
+      },
+      {
+        "args": [
+          2
+        ],
+        "expected": 2
+      },
+      {
+        "args": [
+          5
+        ],
+        "expected": 8
+      },
+      {
+        "args": [
+          10
+        ],
+        "expected": 89
+      },
+      {
+        "args": [
+          20
+        ],
+        "expected": 10946
+      },
+      {
+        "args": [
+          40
+        ],
+        "expected": 165580141
+      }
+    ],
+    "hint": "The last move comes from n-1 or n-2, so f(n)=f(n-1)+f(n-2). Update two rolling variables to avoid repeated recursion.",
+    "complexity": "Time O(n), auxiliary space O(1).",
+    "solution": "function countWays(n) {\n  let a = 1, b = 1;\n  for (let i = 2; i <= n; i++) {\n    [a, b] = [b, a + b];\n  }\n  return n === 0 ? a : b;\n}"
+  },
+  {
+    "id": "merge-ranges",
+    "title": "Merge Overlapping Intervals",
+    "level": "Medium",
+    "tags": [
+      "Sorting",
+      "Intervals"
+    ],
+    "fn": "mergeRanges",
+    "params": "ranges",
+    "description": "Given closed intervals [start, end], merge all intervals that overlap or touch at an endpoint. Return the result sorted by start. For example, [1,3] and [3,6] merge into [1,6]. The input may be unsorted.",
+    "constraints": [
+      "0 ≤ ranges.length ≤ 500",
+      "Each interval has two integers with start ≤ end",
+      "Return [] for empty input; no two output intervals may still be mergeable"
+    ],
+    "tests": [
+      {
+        "args": [
+          [
+            [
+              5,
+              8
+            ],
+            [
+              1,
+              3
+            ],
+            [
+              2,
+              4
+            ]
+          ]
+        ],
+        "expected": [
+          [
+            1,
+            4
+          ],
+          [
+            5,
+            8
+          ]
+        ]
+      },
+      {
+        "args": [
+          [
+            [
+              1,
+              3
+            ],
+            [
+              3,
+              6
+            ]
+          ]
+        ],
+        "expected": [
+          [
+            1,
+            6
+          ]
+        ]
+      },
+      {
+        "args": [
+          []
+        ],
+        "expected": []
+      },
+      {
+        "args": [
+          [
+            [
+              2,
+              2
+            ]
+          ]
+        ],
+        "expected": [
+          [
+            2,
+            2
+          ]
+        ]
+      },
+      {
+        "args": [
+          [
+            [
+              1,
+              10
+            ],
+            [
+              2,
+              3
+            ],
+            [
+              4,
+              9
+            ]
+          ]
+        ],
+        "expected": [
+          [
+            1,
+            10
+          ]
+        ]
+      },
+      {
+        "args": [
+          [
+            [
+              4,
+              5
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        ],
+        "expected": [
+          [
+            1,
+            2
+          ],
+          [
+            4,
+            5
+          ]
+        ]
+      },
+      {
+        "args": [
+          [
+            [
+              -4,
+              -1
+            ],
+            [
+              -2,
+              3
+            ]
+          ]
+        ],
+        "expected": [
+          [
+            -4,
+            3
+          ]
+        ]
+      },
+      {
+        "args": [
+          [
+            [
+              1,
+              2
+            ],
+            [
+              1,
+              2
+            ]
+          ]
+        ],
+        "expected": [
+          [
+            1,
+            2
+          ]
+        ]
+      }
+    ],
+    "hint": "Sort by start. Compare each start with the end of the last result interval: extend that end on overlap; otherwise append a new interval.",
+    "complexity": "Sorting takes O(n log n), scanning takes O(n), and the result uses O(n) space.",
+    "solution": "function mergeRanges(ranges) {\n  const sorted = ranges.map(r => [...r]).sort((a, b) => a[0] - b[0]);\n  const result = [];\n  for (const range of sorted) {\n    const last = result[result.length - 1];\n    if (last && range[0] <= last[1]) last[1] = Math.max(last[1], range[1]);\n    else result.push(range);\n  }\n  return result;\n}"
+  }
+];</script><script>'use strict';
+(() => {
+const data = window.PRACTICE_PROBLEMS, $ = s => document.querySelector(s);
+const key = 'agent-fieldnotes-coding-v1'; let state = {code:{}, solved:[], history:[]};
+try { const x = JSON.parse(localStorage.getItem(key)); if(x && typeof x === 'object') state = {code:x.code && typeof x.code === 'object'?x.code:{},solved:Array.isArray(x.solved)?x.solved:[],history:Array.isArray(x.history)?x.history.slice(0,40):[]}; } catch {}
+let current = data.find(p => '#'+p.id === location.hash) || data[0], activeTab = 'description', activeRun = null;
+const escape = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const json = v => {try {const s=JSON.stringify(v); return s === undefined?'undefined':s.length>2500?s.slice(0,2500)+'…':s;}catch{return '[Result cannot be serialized]'}};
+const template = p => `/**\n * ${p.title}\n * Return the result; do not only use console.log.\n */\nfunction ${p.fn}(${p.params}) {\n  // Write your solution here\n  \n}\n`;
+function save() { try { localStorage.setItem(key,JSON.stringify(state)); $('#save-status').textContent='Saved automatically · This browser only'; } catch { $('#save-status').textContent='Browser storage is unavailable. Back up your code manually.'; } }
+function list() {
+ const solved=data.filter(p=>state.solved.includes(p.id)).length; $('#solved').textContent=`${solved} / ${data.length}`;$('#bar').style.width=solved/data.length*100+'%';
+ const q=$('#query').value.trim().toLowerCase(), level=$('#difficulty').value, status=$('#status').value;
+ const rows=data.filter(p=>(!level||p.level===level)&&(!status||(status==='done')===state.solved.includes(p.id))&&[p.title,...p.tags,p.fn].join(' ').toLowerCase().includes(q));
+ $('#problems').innerHTML=rows.length?rows.map(p=>`<button class="problem ${p.id===current.id?'active':''}" data-id="${p.id}" aria-current="${p.id===current.id}"><span class="number">${String(data.indexOf(p)+1).padStart(2,'0')}</span><span><strong>${p.title}</strong><small>${p.level} · ${p.tags.join(' / ')}</small></span>${state.solved.includes(p.id)?'<span class="done">✓</span>':''}</button>`).join(''):'<p class="empty">No matching problems. Try different filters.</p>';
+}
+function question() {
+ const p=current;document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===activeTab));
+ let body=`<h2>${String(data.indexOf(p)+1).padStart(2,'0')}. ${p.title}</h2><span class="badge ${p.level==='Medium'?'medium':''}">${p.level}</span>${p.tags.map(t=>`<span class="badge">${t}</span>`).join('')}`;
+ if(activeTab==='description')body+=`<p>${p.description}</p><h3>Function contract</h3><pre class="example">${p.fn}(${p.params})</pre>`+p.tests.slice(0,2).map((t,i)=>`<h3>Example ${i+1}</h3><pre class="example">Arguments: ${escape(json(t.args))}\nExpected: ${escape(json(t.expected))}</pre>`).join('')+`<h3>Constraints</h3><ul>${p.constraints.map(c=>`<li>${c}</li>`).join('')}</ul><div class="note">Run samples checks the first 2 cases; Submit checks all ${p.tests.length} cases. Tests are public; timings only describe this device.</div>`;
+ else if(activeTab==='hint')body+=`<h3>Solution hint</h3><p>${p.hint}</p><h3>Complexity analysis</h3><p>${p.complexity}</p><details><summary>Reveal the reference solution (try it yourself first)</summary><pre class="solution">${escape(p.solution)}</pre></details><p>Compare the approach with your own code. The reference is not inserted into the editor automatically.</p>`;
+ else {const history=state.history.filter(h=>h.id===p.id);body+=`<p>The latest 40 submissions are kept in this browser. Sample runs are not recorded. ${state.solved.includes(p.id)?'This problem has previously passed the full test suite.':''}</p>`;body+=history.length?history.map(h=>`<div class="history-item"><button class="btn" data-restore="${escape(h.key)}">Load code</button><b class="${h.ok?'pass':'fail'}">${escape(({"\u8fd0\u884c\u8d85\u65f6": "Timed out", "\u8fd0\u884c\u9519\u8bef": "Runtime error", "\u6267\u884c\u5b8c\u6210": "Completed", "\u5168\u90e8\u901a\u8fc7": "All tests passed", "\u6837\u4f8b\u901a\u8fc7": "Samples passed", "\u7b54\u6848\u4e0d\u5339\u914d": "Wrong answer"})[h.status] || h.status)}</b><small>${escape(new Date(h.at).toLocaleString())} · ${escape(h.passed)} / ${escape(h.total)} Passed</small></div>`).join(''):'<p>No submissions yet.</p>';}
+ $('#question-content').innerHTML=body;
+}
+function lines(){ $('#lines').textContent=Array.from({length:$('#editor').value.split('\n').length},(_,i)=>i+1).join('\n');$('#lines').scrollTop=$('#editor').scrollTop; }
+function select(p){ if(activeRun)stop('Problem changed. Execution stopped.');current=p;history.replaceState(null,'','#'+p.id);$('#editor').value=typeof state.code[p.id]==='string'?state.code[p.id]:template(p);$('#signature').textContent=p.fn+'()';$('#custom').value=json(p.tests[0].args);$('#result').innerHTML='<div class="idle">⌘<h3>Ready to start?</h3><p>Write your code, then run samples or submit it.</p></div>';lines();list();question(); }
+function busy(value){ ['run','submit','custom-run','reset'].forEach(id=>$('#'+id).disabled=value);$('#stop').hidden=!value; }
+function cleanup(){if(!activeRun)return;clearTimeout(activeRun.timer);window.removeEventListener('message',activeRun.listener);activeRun.frame.remove();activeRun=null;busy(false);}
+function stop(message='Execution stopped.'){cleanup();$('#result').innerHTML=`<p class="error">${escape(message)}</p>`;}
+function equal(a,b){return JSON.stringify(a)===JSON.stringify(b);}
+// Code runs in a Worker inside an opaque-origin sandbox iframe, not in the main window.
+// CSP blocks network access. Worker timeout: 2s; host startup/response timeout: 5s.
+function run(mode){
+ if(activeRun)return; const p=current, code=$('#editor').value;let cases=mode==='samples'?p.tests.slice(0,2):p.tests;
+ if(!code.trim()){ $('#result').textContent='Write some code first.';return; }if(code.length>30000){$('#result').textContent='Code exceeds the 30,000-character limit.';return;}
+ if(mode==='custom'){try{if($('#custom').value.length>10000)throw Error('Custom input must not exceed 10,000 characters');const args=JSON.parse($('#custom').value);if(!Array.isArray(args)||args.length!==p.params.split(',').length)throw Error('Enter an argument array with the same number of arguments as the function signature');cases=[{args}];}catch(e){$('#result').innerHTML=`<p class="error">${escape(e.message)}</p>`;return;}}
+ state.code[p.id]=code;save();busy(true);$('#result').textContent='Running…';
+ const frame=document.createElement('iframe');frame.setAttribute('sandbox','allow-scripts');frame.hidden=true;frame.setAttribute('aria-hidden','true');
+ const runId=crypto.randomUUID();
+ const workerCode=`'use strict';\nconst send = self.postMessage.bind(self);\nself.onmessage = async ({data}) => {\n const logs=[]; const format=x=>{try{return typeof x==='string'?x:JSON.stringify(x)}catch{return '[Cannot serialize]'}};\n console.log=(...args)=>{if(logs.length<20)logs.push(args.map(format).join(' ').slice(0,500))};\n try {\n  const results=[]; const start=performance.now();\n  for (const args of data.inputs) {\n   const fn=new Function(data.code+'\\n;return typeof '+data.fn+' === "function" ? '+data.fn+' : null;')();\n   if(!fn) throw Error('Please define function '+data.fn);\n   const value=await fn(...args);\n   const text=JSON.stringify(value);\n   if(text!==undefined && text.length>100000) throw Error('Returned result is too large');\n   results.push(text===undefined?{undefined:true}:{value:JSON.parse(text)});\n  }\n  send({ok:true,results,logs,ms:performance.now()-start});\n } catch(e) {send({ok:false,error:String(e && e.message || e).slice(0,1500),logs});}\n};`;
+ const payload={code,fn:p.fn,inputs:cases.map(t=>t.args)};
+ const script=`const id=${JSON.stringify(runId)};const report=data=>parent.postMessage({id,...data},'*');let worker;try{const blob=new Blob([${JSON.stringify(workerCode)}],{type:'text/javascript'});const url=URL.createObjectURL(blob);worker=new Worker(url);const timer=setTimeout(()=>{worker.terminate();URL.revokeObjectURL(url);report({ok:false,error:'Execution exceeded 2 seconds and was terminated. Check for infinite loops or excessive complexity.',timeout:true})},2000);worker.onmessage=e=>{clearTimeout(timer);worker.terminate();URL.revokeObjectURL(url);report(e.data)};worker.onerror=e=>{clearTimeout(timer);worker.terminate();report({ok:false,error:e.message||'Code execution failed'})};worker.postMessage(${JSON.stringify(payload)});}catch(e){report({ok:false,error:e.message||'This browser does not support local execution'})}`;
+ frame.srcdoc=`<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval'; worker-src blob:; connect-src 'none';"><script>${script.replace(/<\/script/gi,'<\\/script')}<\/script>`;
+ const finish=d=>{
+  const results=Array.isArray(d.results)?d.results:[]; const valid=d.ok===true && results.length===cases.length;const passed=valid?results.filter((r,i)=>mode==='custom'||(!r.undefined&&equal(r.value,cases[i].expected))).length:0;const ok=valid&&passed===cases.length;
+  const label=d.timeout?'Timed out':!valid?'Runtime error':mode==='custom'?'Completed':ok?(mode==='submit'?'All tests passed':'Samples passed'):'Wrong answer';
+  cleanup();let html=`<div class="result-heading"><b class="${ok?'pass':'fail'}">${label}</b><span>${mode==='custom'?'Custom test':passed+' / '+cases.length+' Passed'}${valid&&Number.isFinite(d.ms)?' · '+d.ms.toFixed(2)+' ms':''}</span></div>`;
+  if(!valid)html+=`<p class="error">${escape(d.error||'The runner did not return complete results.')}</p>`;
+  else html+=results.map((r,i)=>{const match=mode==='custom'||(!r.undefined&&equal(r.value,cases[i].expected));return `<details class="case" ${match?'':'open'}><summary class="${match?'pass':'fail'}">${match?'✓':'×'} Test case ${i+1} · ${mode==='custom'?'Output':match?'Passed':'Not passed'}</summary><pre>Arguments: ${escape(json(cases[i].args))}\nActual: ${escape(r.undefined?'undefined':json(r.value))}${mode==='custom'?'':'\nExpected: '+escape(json(cases[i].expected))}</pre></details>`}).join('');
+  if(Array.isArray(d.logs)&&d.logs.length)html+='<details class="case"><summary>console.log output</summary><pre>'+escape(d.logs.slice(0,20).join('\n'))+'</pre></details>';
+  if(mode==='samples'&&ok)html+='<p>Samples passed. Submit to check the edge cases too.</p>';
+  $('#result').innerHTML=html;
+  if(mode==='submit'){if(ok&&!state.solved.includes(p.id))state.solved.push(p.id);state.history.unshift({key:runId,id:p.id,at:Date.now(),ok,status:label,passed,total:cases.length,code});state.history=state.history.slice(0,40);save();list();if(activeTab==='history')question();}
+ };
+ const listener=e=>{if(e.source===frame.contentWindow&&e.data?.id===runId)finish(e.data)};
+ activeRun={frame,listener,timer:setTimeout(()=>finish({ok:false,timeout:true,error:'The runner did not respond in time and was stopped. Retry or check browser Worker support.'}),5000)};
+ window.addEventListener('message',listener);document.body.append(frame);
+}
+$('#editor').addEventListener('input',()=>{state.code[current.id]=$('#editor').value;save();lines()});$('#editor').addEventListener('scroll',()=>$('#lines').scrollTop=$('#editor').scrollTop);
+$('#editor').addEventListener('keydown',e=>{if(e.key==='Tab'){e.preventDefault();const el=e.target;el.setRangeText('  ',el.selectionStart,el.selectionEnd,'end');el.dispatchEvent(new Event('input'));}if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)){e.preventDefault();run('samples')}});
+$('#query').oninput=list;$('#difficulty').onchange=list;$('#status').onchange=list;
+$('#problems').onclick=e=>{const id=e.target.closest('[data-id]')?.dataset.id;const p=data.find(p=>p.id===id);if(p)select(p)};
+document.querySelector('.question-tabs').onclick=e=>{if(e.target.dataset.tab){activeTab=e.target.dataset.tab;question()}};
+$('#question-content').onclick=e=>{const id=e.target.closest('[data-restore]')?.dataset.restore;if(!id)return;const h=state.history.find(h=>h.key===id);if(h){if(activeRun)stop();$('#editor').value=h.code;state.code[current.id]=h.code;save();lines();}};
+$('#run').onclick=()=>run('samples');$('#submit').onclick=()=>run('submit');$('#custom-run').onclick=()=>run('custom');$('#stop').onclick=()=>stop();
+$('#custom-toggle').onclick=()=>{const open=$('#custom-box').hidden;$('#custom-box').hidden=!open;$('#custom-toggle').setAttribute('aria-expanded',String(open))};
+$('#reset').onclick=()=>$('#reset-dialog').showModal();$('#cancel-reset').onclick=()=>$('#reset-dialog').close();$('#confirm-reset').onclick=()=>{$('#editor').value=template(current);state.code[current.id]=$('#editor').value;save();lines();$('#reset-dialog').close()};
+window.addEventListener('hashchange',()=>{const p=data.find(p=>'#'+p.id===location.hash);if(p)select(p)});window.addEventListener('pagehide',cleanup);select(current);
+})();
+</script><script id="language-links">document.querySelectorAll('[data-language]').forEach(function(a){function update(){var u=new URL(a.href);u.hash=location.hash;a.href=u.href;}update();window.addEventListener('hashchange',update);a.addEventListener('click',function(){update();try{localStorage.setItem('agent-fieldnotes-language',a.dataset.language);}catch(e){}});});</script></body></html>
