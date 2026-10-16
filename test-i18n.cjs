@@ -15,7 +15,7 @@ for(const name of ['index','hot100','practice']){
 const zh=dataset('index.html','HANDBOOK'),en=dataset('index-en.html','HANDBOOK');assert.equal(en.chapters.length,32);assert.deepEqual(en.chapters.map(c=>c.id),zh.chapters.map(c=>c.id));
 for(let i=0;i<32;i++){const a=zh.chapters[i],b=en.chapters[i];assert.equal(a.steps.length,b.steps.length);assert.equal(a.tests.length,b.tests.length);assert.equal(a.lab,b.lab);assert.deepEqual(a.sources.map(x=>x.url),b.sources.map(x=>x.url));assert(b.why.length>100);}
 const hot=datafile('hot100-data.js','HOT100_DATA');assert.equal(hot.length,100);assert.equal(new Set(hot.map(p=>p.category.en)).size,17);
-for(const p of hot){assert(p.title.zh&&p.title.en&&p.statement.zh&&p.statement.en);assert(p.methods.length>0);for(const m of p.methods){assert(m.intuition.zh&&m.intuition.en);assert(m.java&&m.python);assert(m.trace.every(f=>f.note.zh&&f.note.en));}}
+for(const p of hot){assert(p.title.zh&&p.title.en&&p.statement.zh&&p.statement.en);assert(p.methods.length>0);for(const m of p.methods){assert(m.intuition.zh&&m.intuition.en);assert(m.java&&m.python);assert(m.algorithmNotes.zh&&m.algorithmNotes.en);}}
 const pzh=datafile('problems.js','PRACTICE_PROBLEMS'),pen=dataset('practice-en.html','PRACTICE_PROBLEMS');assert.equal(pen.length,8);
 for(let i=0;i<8;i++){const a=pzh[i],b=pen[i];assert.equal(a.id,b.id);assert.equal(a.fn,b.fn);assert.equal(a.params,b.params);assert.deepEqual(a.tests,b.tests);assert.equal(a.solution,b.solution);const fn=new Function(b.solution+';return '+b.fn)();for(const t of b.tests)assert.deepEqual(fn(...structuredClone(t.args)),t.expected);}
 // Run translated state engines too: string-localization must not alter branching.
